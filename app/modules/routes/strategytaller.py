@@ -1,48 +1,28 @@
 from abc import ABC, abstractmethod
 
 
-class RouteStrategy(ABC):
+class ProcesadorStrategy(ABC):
     @abstractmethod
-    def get_best_route(self, origin: int, destination: int) -> dict:
-        pass
-
-    @abstractmethod
-    def get_cost(self, origin: int, destination: int) -> float:
-        pass
-
-    @abstractmethod
-    def get_time(self, origin: int, destination: int) -> float:
+    def get_descuento(self, monto: float, porcentaje: float) -> float:
         pass
 
 
-class CarRoute(RouteStrategy):
-    def get_best_route(self, origin: int, destination: int) -> dict:
-        return {"start_street": origin, "end_street": destination, "route": "Use the avenue 123"}
-
-    def get_cost(self, origin: int, destination: int) -> float:
-        return round((destination - origin) * 0.1, 2)
-
-    def get_time(self, origin: int, destination: int) -> float:
-        return round((destination - origin) * 0.5, 2)
 
 
-class BikeRoute(RouteStrategy):
-    def get_best_route(self, origin: int, destination: int) -> dict:
-        return {"start_street": origin, "end_street": destination, "route": "Use the bike lane"}
+class TarjetaStrategy(ProcesadorStrategy):
+   def get_descuento(self, monto: float, porcentaje: float) -> float:
+        return monto * (porcentaje/100)
 
-    def get_cost(self, origin: int, destination: int) -> float:
+class TransferenciaStrategy(ProcesadorStrategy):
+    def get_descuento(self, monto: float, porcentaje: float) -> float:
         return 0
 
-    def get_time(self, origin: int, destination: int) -> float:
-        return round((destination - origin) * 2, 2)
 
+class EfectivoStrategy(ProcesadorStrategy):
+   def get_descuento(self, monto: float, porcentaje: float) -> float:
 
-class MotorcycleRoute(RouteStrategy):
-    def get_best_route(self, origin: int, destination: int) -> dict:
-        return {"start_street": origin, "end_street": destination, "route": "Use the motorcycle lane"}
+         descuento = monto * (porcentaje/100)
 
-    def get_cost(self, origin: int, destination: int) -> float:
-        return round((destination - origin) * 0.05, 2)
+         descuento_total = descuento + (descuento *(porcentaje/100))
 
-    def get_time(self, origin: int, destination: int) -> float:
-        return round((destination - origin) * 0.25, 2)
+         return  descuento_total
